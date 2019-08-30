@@ -9,15 +9,29 @@ const Background = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${colors.darkgrey};
   z-index: -1;
 `;
 
-const Layout = () => {
+const Content = styled.div`
+  display: inline-block;
+  vertical-align: top;
+`;
+
+const Spacer = styled.div`
+  display: inline-block;
+  width: 20vw;
+  min-width: 300px;
+  height: 100vh;
+`;
+
+const Layout = props => {
   return (
     <Background>
       <Sidebar></Sidebar>
+      <Spacer></Spacer>
+      <Content>{props.children}</Content>
     </Background>
   );
 };

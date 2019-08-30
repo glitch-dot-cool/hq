@@ -1,14 +1,17 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain, BrowserView } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-let mainWindow;
+let mainWindow, view;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    show: false
+    width: 1920,
+    height: 1080,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   const startURL = isDev
@@ -21,6 +24,18 @@ const createWindow = () => {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
+
+  view = new BrowserView();
+  mainWindow.setBrowserView(view);
+  view.setBounds({ x: 300, y: 0, width: 1620, height: 1080 });
+  view.setAutoResize({
+    width: true,
+    height: true
+  });
 };
 
-app.on('ready', createWindow);
+app.on("ready", createWindow);
+
+ipcMain.on("changeRoute", (event, args) => {
+  view.webContents.loadURL(args);
+});

@@ -9,8 +9,7 @@ import Nav from "./Nav";
 const SidebarBackground = styled.div`
   display: inline-block;
   position: fixed;
-  width: 20vw;
-  min-width: 300px;
+  width: 300px;
   height: 100vh;
   background-color: ${colors.nearblack};
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);

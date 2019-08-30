@@ -1,8 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-
 import colors from "../styles/colors";
+
+const electron = window.require("electron");
+const ipc = electron.ipcRenderer;
+
 
 const Nav = () => {
   return (
@@ -11,6 +14,20 @@ const Nav = () => {
         <SideBarNavLink to="/">home</SideBarNavLink>
         <SideBarNavLink to="/about">about</SideBarNavLink>
         <SideBarNavLink to="/jhkasdfjklas">non-existent path</SideBarNavLink>
+        <SideBarNavLink
+          onClick={() =>
+            sendToMainProcess("https://trello.com/b/FloSWCwI/glitchdotcool")
+          }
+        >
+          trello
+        </SideBarNavLink>
+        <SideBarNavLink
+          onClick={() =>
+            sendToMainProcess("https://github.com/glitch-dot-cool")
+          }
+        >
+          github
+        </SideBarNavLink>
         {/* <SideBarNavLink to="/">files</SideBarNavLink>
             <SideBarNavLink to="/">tools</SideBarNavLink>
             <SideBarNavLink to="/">edit website</SideBarNavLink>
@@ -23,6 +40,10 @@ const Nav = () => {
       </SideBarNavLinks>
     </SidebarNavLinksWrapper>
   );
+};
+
+const sendToMainProcess = route => {
+  ipc.send("changeRoute", route);
 };
 
 const SidebarNavLinksWrapper = styled.div``;

@@ -24,18 +24,27 @@ const createWindow = () => {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
-
-  view = new BrowserView();
-  mainWindow.setBrowserView(view);
-  view.setBounds({ x: 300, y: 0, width: 1620, height: 1080 });
-  view.setAutoResize({
-    width: true,
-    height: true
-  });
 };
 
 app.on("ready", createWindow);
 
 ipcMain.on("changeRoute", (event, args) => {
-  view.webContents.loadURL(args);
+  // if the clicked route has a url (i.e. requires BrowserView)
+  if (args !== null){
+    setupBrowserView(args);
+  } else {
+    // if the clicked route does not require BrowserView, kill process
+    view.destroy();
+  }
 });
+
+const setupBrowserView = (url) => {
+      view = new BrowserView();
+      mainWindow.setBrowserView(view);
+      view.setBounds({ x: 300, y: 0, width: 1620, height: 1080 });
+      view.setAutoResize({
+        width: true,
+        height: true
+      });
+      view.webContents.loadURL(url);
+}

@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-const BrowserContainer = styled.div`
-    
-`;
+import Head from "./Head";
 
-const Browser = () => {
-    return (
-        <BrowserContainer></BrowserContainer>
-    )
-}
+const BrowserContainer = styled.div``;
+
+const Browser = site => {
+  return (
+    <BrowserContainer>
+      <Head title={site.title}></Head>
+    </BrowserContainer>
+  );
+};
 
 export default Browser;

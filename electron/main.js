@@ -11,6 +11,7 @@ const createWindow = () => {
     width: width,
     height: height,
     show: false,
+    icon: setIconByOS(),
     webPreferences: {
       nodeIntegration: true
     }
@@ -41,8 +42,10 @@ ipcMain.on("changeRoute", (event, args) => {
   if (args !== null) {
     setupBrowserView(args);
   } else {
-    // if the clicked route does not require BrowserView, kill process
-    view.destroy();
+    // if the clicked route does not require BrowserView and there is an active BrowserView, kill it
+    if (view !== undefined && view !== null){
+      view.destroy();
+    }
   }
 });
 
@@ -60,10 +63,35 @@ const setupBrowserView = url => {
 app.on("ready", createWindow);
 
 // quit when all windows are closed.
-app.on('window-all-closed', () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== "darwin") {
     app.quit();
-	}		
+  }
 });
+
+const setIconByOS = () => {
+  if (process.platform === "darwin") {
+    console.log("detected mac host");
+    return path.join(
+      __dirname,
+      "../",
+      "src/assets/icons/icon.icns"
+    );
+  } else if (process.platform === "linux") {
+    console.log("detected linux host");
+    return path.join(
+      __dirname,
+      "../",
+      "src/assets/icons/64x64.png"
+    );
+  } else if (process.platform === "win32") {
+    console.log("detected windows host");
+    return path.join(
+      __dirname,
+      "../",
+      "src/assets/icons/icon.ico"
+    );
+  }
+};

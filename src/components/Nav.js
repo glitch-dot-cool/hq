@@ -70,6 +70,7 @@ const SideBarNavLink = styled(NavLink)`
   display: block;
   font-size: 3rem;
   color: ${colors.lightgrey};
+  text-decoration: none;
 
   :hover {
     color: ${colors.offwhite};

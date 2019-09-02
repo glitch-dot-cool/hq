@@ -37,10 +37,11 @@ const createWindow = () => {
   });
 };
 
-ipcMain.on("changeRoute", (event, args) => {
+ipcMain.on("changeRoute", (event, url) => {
   // if the clicked route has a url (i.e. requires BrowserView)
-  if (args !== null) {
-    setupBrowserView(args);
+  if (url !== null) {
+    let window = mainWindow.getBounds();
+    setupBrowserView(url, window.width, window.height);
   } else {
     // if the clicked route does not require BrowserView and there is an active BrowserView, kill it
     if (view !== undefined && view !== null){
@@ -49,10 +50,10 @@ ipcMain.on("changeRoute", (event, args) => {
   }
 });
 
-const setupBrowserView = url => {
+const setupBrowserView = (url, width, height) => {
   view = new BrowserView();
   mainWindow.setBrowserView(view);
-  view.setBounds({ x: 300, y: 0, width: 1620, height: 1080 });
+  view.setBounds({ x: 300, y: 0, width: width-300, height: height });
   view.setAutoResize({
     width: true,
     height: true

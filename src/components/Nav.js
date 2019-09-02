@@ -14,6 +14,7 @@ const Nav = () => {
       <SideBarNavLinks>
         <SideBarNavLink
           to={routes.home.path}
+          exact={true}
           onClick={() => sendToMainProcess(routes.home.url)}
         >
           home
@@ -42,15 +43,6 @@ const Nav = () => {
         >
           github
         </SideBarNavLink>
-        {/* <SideBarNavLink to="/">files</SideBarNavLink>
-            <SideBarNavLink to="/">tools</SideBarNavLink>
-            <SideBarNavLink to="/">edit website</SideBarNavLink>
-            <SideBarNavLink to="/">view website</SideBarNavLink>
-            <SideBarNavLink to="/">discord</SideBarNavLink>
-            <SideBarNavLink to="/">trello</SideBarNavLink>
-            <SideBarNavLink to="/">calendar</SideBarNavLink>
-            <SideBarNavLink to="/">soundcloud</SideBarNavLink>
-            <SideBarNavLink to="/">bandcamp</SideBarNavLink> */}
       </SideBarNavLinks>
     </SidebarNavLinksWrapper>
   );
@@ -74,9 +66,12 @@ const SideBarNavLink = styled(NavLink)`
 
   :hover {
     color: ${colors.offwhite};
-    text-decoration: line-through;
     cursor: pointer;
     background-color: ${colors.darkgrey};
+  }
+
+  &.active {
+    text-decoration: line-through;
   }
 `;
 

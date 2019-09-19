@@ -53,7 +53,7 @@ ipcMain.on("changeRoute", (event, url) => {
 const setupBrowserView = (url, width, height) => {
   view = new BrowserView();
   mainWindow.setBrowserView(view);
-  view.setBounds({ x: 300, y: 0, width: width-300, height: height });
+  view.setBounds({ x: 300, y: 0, width: width-315, height: height });
   view.setAutoResize({
     width: true,
     height: true
@@ -63,7 +63,8 @@ const setupBrowserView = (url, width, height) => {
 
 ipcMain.on("updateBrowserView", (event, shiftAmount) => {
   let window = mainWindow.getBounds();
-  view.setBounds({x: shiftAmount, y: 0, width: window.width, height: window.height});
+  // magic # 15 is just a little extra buffer - not sure why but we get some clipping without
+  view.setBounds({x: shiftAmount, y: 0, width: window.width-shiftAmount-15, height: window.height});
 });
 
 app.on("ready", createWindow);

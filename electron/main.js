@@ -44,7 +44,7 @@ ipcMain.on("changeRoute", (event, url) => {
     setupBrowserView(url, window.width, window.height);
   } else {
     // if the clicked route does not require BrowserView and there is an active BrowserView, kill it
-    if (view !== undefined && view !== null){
+    if (view !== undefined && view !== null) {
       view.destroy();
     }
   }
@@ -53,7 +53,7 @@ ipcMain.on("changeRoute", (event, url) => {
 const setupBrowserView = (url, width, height) => {
   view = new BrowserView();
   mainWindow.setBrowserView(view);
-  view.setBounds({ x: 300, y: 0, width: width-315, height: height });
+  view.setBounds({ x: 300, y: 0, width: width - 315, height: height });
   view.setAutoResize({
     width: true,
     height: true
@@ -62,9 +62,19 @@ const setupBrowserView = (url, width, height) => {
 };
 
 ipcMain.on("updateBrowserView", (event, shiftAmount) => {
-  let window = mainWindow.getBounds();
-  // magic # 15 is just a little extra buffer - not sure why but we get some clipping without
-  view.setBounds({x: shiftAmount, y: 0, width: window.width-shiftAmount-15, height: window.height});
+  // check that browserView exists before attempting to modify it
+  if (view !== undefined) {
+    if (!view.isDestroyed()) {
+      let window = mainWindow.getBounds();
+      // magic # 15 is just a little extra buffer - not sure why but we get some clipping without
+      view.setBounds({
+        x: shiftAmount,
+        y: 0,
+        width: window.width - shiftAmount - 15,
+        height: window.height
+      });
+    }
+  }
 });
 
 app.on("ready", createWindow);
@@ -81,24 +91,12 @@ app.on("window-all-closed", () => {
 const setIconByOS = () => {
   if (process.platform === "darwin") {
     console.log("detected mac host");
-    return path.join(
-      __dirname,
-      "../",
-      "src/assets/icons/icon.icns"
-    );
+    return path.join(__dirname, "../", "src/assets/icons/icon.icns");
   } else if (process.platform === "linux") {
     console.log("detected linux host");
-    return path.join(
-      __dirname,
-      "../",
-      "src/assets/icons/64x64.png"
-    );
+    return path.join(__dirname, "../", "src/assets/icons/64x64.png");
   } else if (process.platform === "win32") {
     console.log("detected windows host");
-    return path.join(
-      __dirname,
-      "../",
-      "src/assets/icons/icon.ico"
-    );
+    return path.join(__dirname, "../", "src/assets/icons/icon.ico");
   }
 };

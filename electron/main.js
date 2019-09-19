@@ -61,6 +61,11 @@ const setupBrowserView = (url, width, height) => {
   view.webContents.loadURL(url);
 };
 
+ipcMain.on("updateBrowserView", (event, shiftAmount) => {
+  let window = mainWindow.getBounds();
+  view.setBounds({x: shiftAmount, y: 0, width: window.width, height: window.height});
+});
+
 app.on("ready", createWindow);
 
 // quit when all windows are closed.

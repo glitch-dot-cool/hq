@@ -2,44 +2,17 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import colors from "../styles/colors";
+import measurements from "../styles/measurements"
 import logo from "../assets/icons/256x256.png";
 
 import Nav from "./Nav";
 
-const SidebarBackground = styled.div`
-  display: inline-block;
-  position: fixed;
-  width: 300px;
-  height: 100vh;
-  background-color: ${colors.nearblack};
-  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
-  z-index: 0;
-  transition: 0.5s ease-out all;
-`;
+const electron = window.require("electron");
+const ipc = electron.ipcRenderer;
 
-const HeaderWrapper = styled.a`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-`;
-
-const HeaderLogo = styled.img`
-  display: inline;
-  width: 6rem;
-  margin-right: 1rem;
-  transition: .5s ease-out transform;
-  z-index: 1;
-`;
-
-const HeaderTitle = styled.h1`
-  display: inline;
-  font-size: 4rem;
-  color: ${colors.offwhite};
-  transition: .5s ease-out transform;
-  z-index: 0;
-`;
+const updateBrowserView = shiftAmount => {
+  ipc.send("updateBrowserView", shiftAmount);
+};
 
 class Sidebar extends Component {
   state = {
@@ -72,6 +45,7 @@ class Sidebar extends Component {
           transform: `translateX(195px) scale(.7)`
         }
       });
+      updateBrowserView(50);
     } else {
       this.setState({
         sidebarStyles: {
@@ -84,6 +58,7 @@ class Sidebar extends Component {
           transform: `translateX(0) scale(1)`
         }
       });
+      updateBrowserView(measurements.navWidth);
     }
   };
 
@@ -101,3 +76,38 @@ class Sidebar extends Component {
 }
 
 export default Sidebar;
+
+const SidebarBackground = styled.div`
+  display: inline-block;
+  position: fixed;
+  width: ${measurements.navWidth}px;
+  height: 100vh;
+  background-color: ${colors.nearblack};
+  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 0;
+  transition: 0.5s ease-out all;
+`;
+
+const HeaderWrapper = styled.a`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+`;
+
+const HeaderLogo = styled.img`
+  display: inline;
+  width: 6rem;
+  margin-right: 1rem;
+  transition: 0.5s ease-out transform;
+  z-index: 1;
+`;
+
+const HeaderTitle = styled.h1`
+  display: inline;
+  font-size: 4rem;
+  color: ${colors.offwhite};
+  transition: 0.5s ease-out transform;
+  z-index: 0;
+`;

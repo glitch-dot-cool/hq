@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import colors from "../styles/colors";
+import measurements from "../styles/measurements"
 import Sidebar from "./Sidebar";
 
 const Background = styled.div`
@@ -21,8 +22,7 @@ const Content = styled.div`
 
 const Spacer = styled.div`
   display: inline-block;
-  width: 20vw;
-  min-width: 300px;
+  width: ${measurements.navWidth}px;
   height: 100vh;
 `;
 

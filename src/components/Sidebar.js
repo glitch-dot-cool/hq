@@ -30,6 +30,7 @@ const HeaderLogo = styled.img`
   width: 6rem;
   margin-right: 1rem;
   transition: .5s ease-out transform;
+  z-index: 1;
 `;
 
 const HeaderTitle = styled.h1`
@@ -37,6 +38,7 @@ const HeaderTitle = styled.h1`
   font-size: 4rem;
   color: ${colors.offwhite};
   transition: .5s ease-out transform;
+  z-index: 0;
 `;
 
 class Sidebar extends Component {

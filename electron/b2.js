@@ -90,10 +90,47 @@ async function getUploadUrl() {
         headers: { Authorization: auth.authorizationToken }
       }
     );
+
+    const { authorizationToken, uploadUrl } = res.data;
+
+    return {
+      token: authorizationToken,
+      url: uploadUrl
+    };
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// getUploadUrl();
+
+async function uploadFile() {
+  const fileData =
+    "Each thing (a mirror's face, let us say) was infinite things";
+  const fileName = "aleph.txt";
+  const contentType = "text/plain";
+  const sha1 = crypto
+    .createHash("sha1")
+    .update(fileData)
+    .digest("hex");
+
+  try {
+    const uploadUrl = await getUploadUrl();
+    const res = await axios.post(uploadUrl.url, fileData, {
+      headers: {
+        Authorization: uploadUrl.token,
+        "X-Bz-File-name": fileName,
+        "Content-Type": contentType,
+        "Content-Length": fileData.length,
+        "X-Bz-Content-Sha1": sha1,
+        "X-Bz-Info-Author": "John-Doe"
+      }
+    });
+
     console.log(res);
   } catch (err) {
     console.error(err);
   }
 }
 
-getUploadUrl();
+uploadFile();

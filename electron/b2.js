@@ -1,4 +1,7 @@
 const axios = require("axios");
+const crypto = require("crypto");
+const path = require("path");
+const fs = require("fs");
 
 const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../config");
 
@@ -47,4 +50,30 @@ async function createBucket(bucketName) {
   }
 }
 
-createBucket("glitch-dot-test");
+// createBucket("glitch-dot-test");
+
+async function getBucketId() {
+  try {
+    const auth = await connectAuth();
+
+    const res = await axios.get(
+      `${auth.apiUrl}/b2api/v2/b2_list_buckets?accountId=${auth.accountId}`,
+      {
+        headers: { Authorization: auth.authorizationToken }
+      }
+    );
+
+    const bucketData = res.data.buckets[0];
+
+    const { bucketId, bucketName } = bucketData;
+
+    return {
+      bucketId,
+      bucketName
+    };
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getBucketId();

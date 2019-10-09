@@ -68,12 +68,32 @@ async function getBucketId() {
     const { bucketId, bucketName } = bucketData;
 
     return {
-      bucketId,
-      bucketName
+      id: bucketId,
+      name: bucketName
     };
   } catch (err) {
     console.error(err);
   }
 }
 
-getBucketId();
+// getBucketId();
+
+async function getUploadUrl() {
+  try {
+    const auth = await connectAuth();
+    const bucket = await getBucketId();
+
+    const res = await axios.post(
+      `${auth.apiUrl}/b2api/v2/b2_get_upload_url`,
+      { bucketId: bucket.id },
+      {
+        headers: { Authorization: auth.authorizationToken }
+      }
+    );
+    console.log(res);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getUploadUrl();

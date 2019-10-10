@@ -159,4 +159,34 @@ async function downloadFile(fileName) {
   }
 }
 
-downloadFile("aleph.txt");
+// async function deleteFile(fileName) {
+//   try {
+//     const auth = await connectAuth();
+
+//     const res = await axios.post(
+//       `${auth.apiUrl}/b2api/v2/b2_delete_file_version`,
+//       {}
+//     );
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+async function listFiles() {
+  try {
+    const auth = await connectAuth();
+    const bucket = await getBucketId();
+
+    const res = await axios.post(`${auth.apiUrl}/b2api/v2/b2_list_file_names`, {
+      bucketId: bucket.id
+    }, {
+      headers: {Authorization: auth.authorizationToken}
+    });
+
+    return res.data.files;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+listFiles();

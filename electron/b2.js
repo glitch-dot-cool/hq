@@ -159,34 +159,56 @@ async function downloadFile(fileName) {
   }
 }
 
-// async function deleteFile(fileName) {
-//   try {
-//     const auth = await connectAuth();
-
-//     const res = await axios.post(
-//       `${auth.apiUrl}/b2api/v2/b2_delete_file_version`,
-//       {}
-//     );
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
-
+// listFiles() only lists first 1k files
+// @TODO: implement nextFileName to enable looping through all files
 async function listFiles() {
   try {
     const auth = await connectAuth();
     const bucket = await getBucketId();
 
-    const res = await axios.post(`${auth.apiUrl}/b2api/v2/b2_list_file_names`, {
-      bucketId: bucket.id
-    }, {
-      headers: {Authorization: auth.authorizationToken}
-    });
-
+    const res = await axios.post(
+      `${auth.apiUrl}/b2api/v2/b2_list_file_names`,
+      {
+        bucketId: bucket.id
+      },
+      {
+        headers: { Authorization: auth.authorizationToken }
+      }
+    );
+    
     return res.data.files;
   } catch (err) {
     console.error(err);
   }
 }
 
-listFiles();
+async function deleteFile(fileNameToDelete) {
+  try {
+    const auth = await connectAuth();
+
+    let fileName, fileId;
+    let allFiles = await listFiles();
+
+    allFiles.forEach(file => {
+      if (file.fileName === fileNameToDelete) {
+        fileId = file.fileId;
+        fileName = file.fileName;
+      }
+    });
+
+    const res = await axios.post(
+      `${auth.apiUrl}/b2api/v2/b2_delete_file_version`,
+      {
+        fileName,
+        fileId
+      },
+      {
+        headers: { Authorization: auth.authorizationToken }
+      }
+    );
+
+    console.log(res);
+  } catch (err) {
+    console.error(err);
+  }
+}

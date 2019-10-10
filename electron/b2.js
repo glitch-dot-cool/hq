@@ -2,6 +2,7 @@ const axios = require("axios");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
+const { Readable, Writable } = require("stream");
 
 const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../config");
 
@@ -50,8 +51,6 @@ async function createBucket(bucketName) {
   }
 }
 
-// createBucket("glitch-dot-test");
-
 async function getBucketId() {
   try {
     const auth = await connectAuth();
@@ -76,8 +75,6 @@ async function getBucketId() {
   }
 }
 
-// getBucketId();
-
 async function getUploadUrl() {
   try {
     const auth = await connectAuth();
@@ -101,8 +98,6 @@ async function getUploadUrl() {
     console.error(err);
   }
 }
-
-// getUploadUrl();
 
 async function uploadFile() {
   const fileData =
@@ -133,4 +128,35 @@ async function uploadFile() {
   }
 }
 
-uploadFile();
+async function downloadFile(fileName) {
+  try {
+    const auth = await connectAuth();
+    const bucket = await getBucketId();
+
+    const res = await axios.get(
+      `${auth.downloadUrl}/file/${bucket.name}/${fileName}`,
+      {
+        headers: { Authorization: auth.authorizationToken }
+      }
+    );
+
+    const savePath = `/downloads/${fileName}`;
+
+    let source = new Readable();
+    source._read = () => {};
+    source.push(res.data);
+    // source.push(null);
+
+    let destination = fs.createWriteStream(savePath);
+
+    source.on("end", () => {
+      console.log("File successfully downloaded.");
+    });
+
+    source.pipe(destination);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+downloadFile("aleph.txt");

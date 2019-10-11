@@ -7,17 +7,17 @@ const { Readable, Writable } = require("stream");
 const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../config");
 
 const authString = `${B2_KEY_ID}:${B2_APPLICATION_KEY}`;
-const encodedBase64 = new Buffer.alloc(authString.length, authString).toString(
+const authStringBase64 = new Buffer.alloc(authString.length, authString).toString(
   "base64"
 );
 
-async function connectAuth() {
+async function getAuth() {
   try {
     const res = await axios.post(
       "https://api.backblazeb2.com/b2api/v2/b2_authorize_account",
       {},
       {
-        headers: { Authorization: `Basic ${encodedBase64}` }
+        headers: { Authorization: `Basic ${authStringBase64}` }
       }
     );
 
@@ -25,7 +25,7 @@ async function connectAuth() {
       accountId: B2_KEY_ID,
       applicationKey: B2_APPLICATION_KEY,
       apiUrl: res.data.apiUrl,
-      authorizationToken: res.data.authorizationToken,
+      token: res.data.authorizationToken,
       downloadUrl: res.data.downloadUrl,
       recommendedPartSize: res.data.recommendedPartSize
     };
@@ -36,12 +36,12 @@ async function connectAuth() {
 
 async function createBucket(bucketName) {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
 
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_create_bucket?accountId=${auth.accountId}&bucketName=${bucketName}&bucketType=allPrivate`,
       {
-        headers: { Authorization: auth.authorizationToken }
+        headers: { Authorization: auth.token }
       }
     );
 
@@ -53,12 +53,12 @@ async function createBucket(bucketName) {
 
 async function getBucketId() {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
 
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_list_buckets?accountId=${auth.accountId}`,
       {
-        headers: { Authorization: auth.authorizationToken }
+        headers: { Authorization: auth.token }
       }
     );
 
@@ -77,14 +77,14 @@ async function getBucketId() {
 
 async function getUploadUrl() {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
     const bucket = await getBucketId();
 
     const res = await axios.post(
       `${auth.apiUrl}/b2api/v2/b2_get_upload_url`,
       { bucketId: bucket.id },
       {
-        headers: { Authorization: auth.authorizationToken }
+        headers: { Authorization: auth.token }
       }
     );
 
@@ -114,9 +114,9 @@ async function uploadFile() {
     const res = await axios.post(uploadUrl.url, fileData, {
       headers: {
         Authorization: uploadUrl.token,
-        "X-Bz-File-name": fileName,
         "Content-Type": contentType,
         "Content-Length": fileData.length,
+        "X-Bz-File-name": fileName,
         "X-Bz-Content-Sha1": sha1,
         "X-Bz-Info-Author": "John-Doe"
       }
@@ -130,13 +130,13 @@ async function uploadFile() {
 
 async function downloadFile(fileName) {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
     const bucket = await getBucketId();
 
     const res = await axios.get(
       `${auth.downloadUrl}/file/${bucket.name}/${fileName}`,
       {
-        headers: { Authorization: auth.authorizationToken }
+        headers: { Authorization: auth.token }
       }
     );
 
@@ -161,7 +161,7 @@ async function downloadFile(fileName) {
 
 async function listFiles() {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
     const bucket = await getBucketId();
 
     let startFileName = null;
@@ -175,7 +175,7 @@ async function listFiles() {
           startFileName
         },
         {
-          headers: { Authorization: auth.authorizationToken }
+          headers: { Authorization: auth.token }
         }
       );
 
@@ -195,7 +195,7 @@ async function listFiles() {
 
 async function deleteFile(fileNameToDelete) {
   try {
-    const auth = await connectAuth();
+    const auth = await getAuth();
 
     let fileName, fileId;
     let allFiles = await listFiles();
@@ -214,7 +214,7 @@ async function deleteFile(fileNameToDelete) {
         fileId
       },
       {
-        headers: { Authorization: auth.authorizationToken }
+        headers: { Authorization: auth.token }
       }
     );
 

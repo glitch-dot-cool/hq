@@ -7,9 +7,10 @@ const { Readable, Writable } = require("stream");
 const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../config");
 
 const authString = `${B2_KEY_ID}:${B2_APPLICATION_KEY}`;
-const authStringBase64 = new Buffer.alloc(authString.length, authString).toString(
-  "base64"
-);
+const authStringBase64 = new Buffer.alloc(
+  authString.length,
+  authString
+).toString("base64");
 
 async function getAuth() {
   try {
@@ -219,6 +220,23 @@ async function deleteFile(fileNameToDelete) {
     );
 
     console.log(res);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getFileId(fileName) {
+  try {
+    const files = await listFiles();
+    let fileId;
+
+    files.forEach(file => {
+      if (file.fileName === fileName) {
+        fileId = file.fileId;
+      }
+    });
+
+    return fileId;
   } catch (err) {
     console.error(err);
   }

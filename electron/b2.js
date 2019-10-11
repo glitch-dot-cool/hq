@@ -159,24 +159,35 @@ async function downloadFile(fileName) {
   }
 }
 
-// listFiles() only lists first 1k files
-// @TODO: implement nextFileName to enable looping through all files
 async function listFiles() {
   try {
     const auth = await connectAuth();
     const bucket = await getBucketId();
 
-    const res = await axios.post(
-      `${auth.apiUrl}/b2api/v2/b2_list_file_names`,
-      {
-        bucketId: bucket.id
-      },
-      {
-        headers: { Authorization: auth.authorizationToken }
-      }
-    );
-    
-    return res.data.files;
+    let startFileName = null;
+    let allFiles = [];
+
+    while (true) {
+      let res = await axios.post(
+        `${auth.apiUrl}/b2api/v2/b2_list_file_names`,
+        {
+          bucketId: bucket.id,
+          startFileName
+        },
+        {
+          headers: { Authorization: auth.authorizationToken }
+        }
+      );
+
+      res.data.files.forEach(file => {
+        allFiles.push(file);
+      });
+
+      startFileName = res.data.nextFileName;
+      if (res.data.nextFileName === null) break;
+    }
+
+    return allFiles;
   } catch (err) {
     console.error(err);
   }

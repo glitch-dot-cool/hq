@@ -160,6 +160,31 @@ async function downloadFile(fileName) {
   }
 }
 
+async function downloadFileById(fileName){
+  try {
+    const auth = await getAuth();
+    const fileId = await getFileId(fileName);  
+
+    const res = await axios.get(`${auth.apiUrl}/b2api/v2/b2_download_file_by_id?fileId=${fileId}`, {
+      headers: {Authorization: auth.token}
+    });
+
+    const savePath = `/downloads/${fileName}`;
+
+    let source = new Readable();
+    source._read = () => {};
+    source.push(res.data);
+
+    let destination = fs.createWriteStream(savePath);
+
+    source.pipe(destination);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+downloadFileById("aleph.txt");
+
 async function listFiles() {
   try {
     const auth = await getAuth();

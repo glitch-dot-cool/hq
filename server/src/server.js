@@ -8,6 +8,5 @@ app.listen(PORT, () => console.log(`server listening on port ${PORT}...`));
 
 connectToDB();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/auth", require("./routes/api/auth"));

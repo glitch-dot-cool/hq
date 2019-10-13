@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const secret = require("../../config/serverConfig").jwtSecret;
 const User = require("../../models/User");
 
 // @route   POST api/users
@@ -55,14 +58,28 @@ router.post(
         await user.save();
 
         // return JWT
-        // @TODO
-        res.status(200).send("User successfully registered.");
+        const payload = {
+          user: {
+            id: user.id
+          }
+        };
+
+        jwt.sign(
+          payload,
+          secret,
+          {
+            expiresIn: 3600
+          },
+          (err, token) => {
+            if (err) throw err;
+
+            res.json({ token });
+          }
+        );
       } catch (err) {
         console.error(err);
         res.status(500).send("Server Error.");
       }
-
-      return res.status(200).send("passed validation");
     }
   }
 );

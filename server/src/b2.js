@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const { Readable, Writable } = require("stream");
 
-const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../config");
+const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../../config");
 
 const authString = `${B2_KEY_ID}:${B2_APPLICATION_KEY}`;
 const authStringBase64 = new Buffer.alloc(
@@ -160,14 +160,17 @@ async function downloadFile(fileName) {
   }
 }
 
-async function downloadFileById(fileName){
+async function downloadFileById(fileName) {
   try {
     const auth = await getAuth();
-    const fileId = await getFileId(fileName);  
+    const fileId = await getFileId(fileName);
 
-    const res = await axios.get(`${auth.apiUrl}/b2api/v2/b2_download_file_by_id?fileId=${fileId}`, {
-      headers: {Authorization: auth.token}
-    });
+    const res = await axios.get(
+      `${auth.apiUrl}/b2api/v2/b2_download_file_by_id?fileId=${fileId}`,
+      {
+        headers: { Authorization: auth.token }
+      }
+    );
 
     const savePath = `/downloads/${fileName}`;
 
@@ -182,8 +185,6 @@ async function downloadFileById(fileName){
     console.error(err);
   }
 }
-
-downloadFileById("aleph.txt");
 
 async function listFiles() {
   try {
@@ -266,3 +267,16 @@ async function getFileId(fileName) {
     console.error(err);
   }
 }
+
+module.exports = {
+  getAuth,
+  createBucket,
+  getBucketId,
+  getUploadUrl,
+  uploadFile,
+  downloadFile,
+  downloadFileById,
+  listFiles,
+  deleteFile,
+  getFileId
+};

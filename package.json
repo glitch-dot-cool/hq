@@ -43,5 +43,6 @@
     "electron-builder": "^21.2.0",
     "electron-is-dev": "^1.1.0",
     "wait-on": "^3.3.0"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

@@ -2,19 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 import Head from "./Head";
-
-const Block = styled.div`
-    background-color: orangered;
-    width: 500px;
-    height: 1200px;
-`
+import LogInForm from "./LogInForm"
 
 const About = () => {
   return (
     <div>
       <Head title="about"></Head>
-      <h1>about</h1>
-      <Block></Block>
+      <h1>sign in</h1>
+      <LogInForm></LogInForm>
     </div>
   );
 };

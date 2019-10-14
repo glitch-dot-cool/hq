@@ -2,6 +2,9 @@ const electron = require("electron");
 const { app, BrowserWindow, ipcMain, BrowserView } = electron;
 const path = require("path");
 const isDev = require("electron-is-dev");
+const setupDevtools = require("./devtools").setupDevtools;
+const installExtension = require("electron-devtools-installer");
+const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension;
 
 let mainWindow, view;
 
@@ -77,7 +80,10 @@ ipcMain.on("updateBrowserView", (event, shiftAmount) => {
   }
 });
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+  createWindow();
+  setupDevtools([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+});
 
 // quit when all windows are closed.
 app.on("window-all-closed", () => {

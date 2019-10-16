@@ -1,10 +1,13 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { connect } from "react-redux";
+import { setAlert } from "../actions/alert";
+import PropTypes from "prop-types";
 
 const Form = styled.form``;
 
-const LogInForm = () => {
+const LogInForm = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -35,9 +38,14 @@ const LogInForm = () => {
 
       const res = await axios.post("/api/auth", body, config);
 
-      console.log(res);
+      if (res.status === 200) {
+        setAlert("Logged in successfully", "success");
+      } else {
+        setAlert("Invalid credentials", "danger");
+      }
     } catch (err) {
       console.error(err);
+      setAlert("Server error", "danger");
     }
   };
 
@@ -57,4 +65,11 @@ const LogInForm = () => {
   );
 };
 
-export default LogInForm;
+LogInForm.propTypes = {
+  setAlert: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { setAlert }
+)(LogInForm);

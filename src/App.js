@@ -39,11 +39,11 @@ const App = () => {
             <PrivateRoute path={routes.dashboard.path} component={Dashboard} />
             <PrivateRoute
               path={routes.trello.path}
-              render={() => <Browser title={"trello"}></Browser>}
+              component={Browser}
             />
             <PrivateRoute
               path={routes.github.path}
-              render={() => <Browser title={"github"}></Browser>}
+              component={Browser}
             />
             <Route component={Error} />
           </Switch>

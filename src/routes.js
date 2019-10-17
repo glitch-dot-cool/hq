@@ -12,7 +12,7 @@ export default {
     url: "https://github.com/glitch-dot-cool"
   },
   login: {
-    path: "/login",
+    path: "/",
     url: undefined
   },
   dashboard: {

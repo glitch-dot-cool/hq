@@ -17,6 +17,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Error from "./components/Error";
 import Alert from "./components/Alert";
+import PrivateRoute from "./components/PrivateRoute";
 
 // check token on each app load
 if (localStorage.token) {
@@ -35,12 +36,12 @@ const App = () => {
           <Alert />
           <Switch>
             <Route exact path={routes.login.path} component={Login} />
-            <Route path={routes.dashboard.path} component={Dashboard}></Route>
-            <Route
+            <PrivateRoute path={routes.dashboard.path} component={Dashboard} />
+            <PrivateRoute
               path={routes.trello.path}
               render={() => <Browser title={"trello"}></Browser>}
             />
-            <Route
+            <PrivateRoute
               path={routes.github.path}
               render={() => <Browser title={"github"}></Browser>}
             />

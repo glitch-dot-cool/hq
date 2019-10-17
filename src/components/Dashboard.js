@@ -16,7 +16,7 @@ const Dashboard = ({ loading, user }) => {
 
 Dashboard.protoTypes = {
   user: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -24,7 +24,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

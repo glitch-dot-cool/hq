@@ -14,7 +14,7 @@ import routes from "./routes";
 import Layout from "./components/Layout";
 import Browser from "./components/Browser";
 import Login from "./components/Login";
-import About from "./components/About";
+import Dashboard from "./components/Dashboard";
 import Error from "./components/Error";
 import Alert from "./components/Alert";
 
@@ -35,7 +35,7 @@ const App = () => {
           <Alert />
           <Switch>
             <Route exact path={routes.login.path} component={Login} />
-            <Route path={routes.dashboard.path} component={About}></Route>
+            <Route path={routes.dashboard.path} component={Dashboard}></Route>
             <Route
               path={routes.trello.path}
               render={() => <Browser title={"trello"}></Browser>}

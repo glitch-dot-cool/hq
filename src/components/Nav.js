@@ -20,7 +20,6 @@ const Nav = ({ auth: { isAuthenticated, loading }, logout }) => {
       >
         dashboard
       </SideBarNavLink>
-      <SideBarNavLink to="/jhkasdfjklas">non-existent path</SideBarNavLink>
       <SideBarNavLink
         to={routes.trello.path}
         onClick={() => sendToMainProcess(routes.trello.url)}
@@ -41,7 +40,6 @@ const Nav = ({ auth: { isAuthenticated, loading }, logout }) => {
 
   const publicLinks = (
     <Fragment>
-      <SideBarNavLink to="/jhkasdfjklas">non-existent path</SideBarNavLink>
       <SideBarNavLink
         to={routes.login.path}
         exact={true}

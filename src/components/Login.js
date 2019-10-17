@@ -6,7 +6,7 @@ import LogInForm from "./LogInForm";
 const Home = () => {
   return (
     <div>
-      <Head title="home"></Head>
+      <Head title="login"></Head>
       <h1>login</h1>
       <LogInForm></LogInForm>
     </div>

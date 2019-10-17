@@ -13,21 +13,14 @@ const Nav = () => {
     <SidebarNavLinksWrapper>
       <SideBarNavLinks>
         <SideBarNavLink
-          to={routes.home.path}
-          exact={true}
-          onClick={() => sendToMainProcess(routes.home.url)}
+          to={routes.dashboard.path}
+          onClick={() => sendToMainProcess(routes.dashboard.url)}
         >
-          home
-        </SideBarNavLink>
-        <SideBarNavLink
-          to={routes.about.path}
-          onClick={() => sendToMainProcess(routes.about.url)}
-        >
-          about
+          dashboard
         </SideBarNavLink>
         <SideBarNavLink
           to="/jhkasdfjklas"
-          onClick={() => sendToMainProcess(routes.about.url)}
+          onClick={() => sendToMainProcess(routes.dashboard.url)}
         >
           non-existent path
         </SideBarNavLink>
@@ -42,6 +35,13 @@ const Nav = () => {
           onClick={() => sendToMainProcess(routes.github.url)}
         >
           github
+        </SideBarNavLink>
+        <SideBarNavLink
+          to={routes.login.path}
+          exact={true}
+          onClick={() => sendToMainProcess(routes.login.url)}
+        >
+          login
         </SideBarNavLink>
       </SideBarNavLinks>
     </SidebarNavLinksWrapper>

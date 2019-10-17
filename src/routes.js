@@ -11,12 +11,12 @@ export default {
     path: "/github",
     url: "https://github.com/glitch-dot-cool"
   },
-  home: {
-    path: "/",
+  login: {
+    path: "/login",
     url: undefined
   },
-  about: {
-    path: "/about",
+  dashboard: {
+    path: "/dashboard",
     url: undefined
   }
 };

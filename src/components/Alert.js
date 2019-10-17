@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 const Alert = ({ alerts }) => {
-  console.log(alerts);
   return (
     alerts !== null &&
     alerts.length > 0 &&

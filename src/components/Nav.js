@@ -32,7 +32,14 @@ const Nav = ({ auth: { isAuthenticated, loading }, logout }) => {
       >
         github
       </SideBarNavLink>
-      <SideBarNavLink to={"/"} exact={true} onClick={() => logout()}>
+      <SideBarNavLink
+        to={"/"}
+        exact={true}
+        onClick={() => {
+          logout();
+          sendToMainProcess(routes.login.path);
+        }}
+      >
         logout
       </SideBarNavLink>
     </Fragment>

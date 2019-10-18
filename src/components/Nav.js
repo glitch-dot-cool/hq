@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 
 import colors from "../styles/colors";
+import measurements from "../styles/measurements";
 import routes from "../routes";
 
 const electron = window.require("electron");
@@ -73,7 +74,7 @@ const sendToMainProcess = route => {
 const SidebarNavLinksWrapper = styled.div``;
 
 const SideBarNavLinks = styled.nav`
-  padding: 2rem;
+  padding: ${measurements.layoutPadding}rem;
 `;
 
 const SideBarNavLink = styled(NavLink)`

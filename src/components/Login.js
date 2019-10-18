@@ -2,12 +2,13 @@ import React from "react";
 
 import Head from "./Head";
 import LogInForm from "./LogInForm";
+import { PageHeader } from "../utils/utilComponents";
 
 const Home = () => {
   return (
     <div>
       <Head title="login"></Head>
-      <h1>login</h1>
+      <PageHeader>login</PageHeader>
       <LogInForm></LogInForm>
     </div>
   );

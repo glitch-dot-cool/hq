@@ -32,19 +32,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <Alert />
         <Layout>
-          <Alert />
           <Switch>
             <Route exact path={routes.login.path} component={Login} />
             <PrivateRoute path={routes.dashboard.path} component={Dashboard} />
-            <PrivateRoute
-              path={routes.trello.path}
-              component={Browser}
-            />
-            <PrivateRoute
-              path={routes.github.path}
-              component={Browser}
-            />
+            <PrivateRoute path={routes.trello.path} component={Browser} />
+            <PrivateRoute path={routes.github.path} component={Browser} />
             <Route component={Error} />
           </Switch>
         </Layout>

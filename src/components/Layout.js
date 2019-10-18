@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import colors from "../styles/colors";
-import measurements from "../styles/measurements"
+import measurements from "../styles/measurements";
 import Sidebar from "./Sidebar";
 
 const Background = styled.div`
@@ -18,19 +18,13 @@ const Background = styled.div`
 const Content = styled.div`
   display: inline-block;
   vertical-align: top;
-`;
-
-const Spacer = styled.div`
-  display: inline-block;
-  width: ${measurements.navWidth}px;
-  height: 100vh;
+  padding: ${measurements.layoutPadding}rem;
 `;
 
 const Layout = props => {
   return (
     <Background>
       <Sidebar></Sidebar>
-      <Spacer></Spacer>
       <Content>{props.children}</Content>
     </Background>
   );

@@ -1,8 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { sidebarOpen, sidebarClose } from "../actions/sidebar";
 
 import colors from "../styles/colors";
-import measurements from "../styles/measurements"
+import measurements from "../styles/measurements";
 import logo from "../assets/icons/256x256.png";
 
 import Nav from "./Nav";
@@ -25,6 +28,9 @@ class Sidebar extends Component {
     },
     logoStyles: {
       transform: `translateX(0) scale(1)`
+    },
+    spacerStyles: {
+      transform: `translateX(0)`
     }
   };
 
@@ -33,7 +39,9 @@ class Sidebar extends Component {
       return { sidebarOpen: !prevState.sidebarOpen };
     });
 
-    if (this.state.sidebarOpen) {
+    if (this.props.isOpen === true) {
+      this.props.sidebarClose();
+
       this.setState({
         sidebarStyles: {
           transform: `translateX(-250px)`
@@ -43,10 +51,15 @@ class Sidebar extends Component {
         },
         logoStyles: {
           transform: `translateX(195px) scale(.7)`
+        },
+        spacerStyles: {
+          width: `50px`
         }
       });
       updateBrowserView(50);
-    } else {
+    } else if (this.props.isOpen === false) {
+      this.props.sidebarOpen();
+
       this.setState({
         sidebarStyles: {
           transform: `translateX(0)`
@@ -56,6 +69,9 @@ class Sidebar extends Component {
         },
         logoStyles: {
           transform: `translateX(0) scale(1)`
+        },
+        spacerStyles: {
+          width: `${measurements.navWidth}px`
         }
       });
       updateBrowserView(measurements.navWidth);
@@ -64,18 +80,34 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <SidebarBackground style={this.state.sidebarStyles}>
-        <HeaderWrapper onClick={this.sidebarToggle}>
-          <HeaderLogo src={logo} style={this.state.logoStyles} />
-          <HeaderTitle style={this.state.headerStyles}>glitcHQ</HeaderTitle>
-        </HeaderWrapper>
-        <Nav></Nav>
-      </SidebarBackground>
+      <Fragment>
+        <SidebarBackground style={this.state.sidebarStyles}>
+          <HeaderWrapper onClick={this.sidebarToggle}>
+            <HeaderLogo src={logo} style={this.state.logoStyles} />
+            <HeaderTitle style={this.state.headerStyles}>glitcHQ</HeaderTitle>
+          </HeaderWrapper>
+          <Nav></Nav>
+        </SidebarBackground>
+        <Spacer style={this.state.spacerStyles}></Spacer>
+      </Fragment>
     );
   }
 }
 
-export default Sidebar;
+Sidebar.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  sidebarOpen: PropTypes.func.isRequired,
+  sidebarClose: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  isOpen: state.sidebar.isOpen
+});
+
+export default connect(
+  mapStateToProps,
+  { sidebarOpen, sidebarClose }
+)(Sidebar);
 
 const SidebarBackground = styled.div`
   display: inline-block;
@@ -110,4 +142,12 @@ const HeaderTitle = styled.h1`
   color: ${colors.offwhite};
   transition: 0.5s ease-out transform;
   z-index: 0;
+`;
+
+const Spacer = styled.div`
+  display: inline-block;
+  width: ${measurements.navWidth}px;
+  height: 100vh;
+  pointer-events: none;
+  transition: 0.5s ease-out all;
 `;

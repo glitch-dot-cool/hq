@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import Head from "./Head";
+import { PageHeader } from "../utils/utilComponents";
 
 const Dashboard = ({ loading, user }) => {
   return (
     <div>
       <Head title="dashboard"></Head>
-      <h1>dashboard</h1>
+      <PageHeader>dashboard</PageHeader>
       {!loading && user !== null && <h3>hello {user.name}</h3>}
     </div>
   );

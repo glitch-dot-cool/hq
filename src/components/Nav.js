@@ -38,7 +38,7 @@ const Nav = ({ auth: { isAuthenticated, loading }, logout }) => {
         exact={true}
         onClick={() => {
           logout();
-          sendToMainProcess(routes.login.path);
+          sendToMainProcess(routes.login.url);
         }}
       >
         logout

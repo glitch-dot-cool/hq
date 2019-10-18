@@ -42,7 +42,7 @@ const createWindow = () => {
 
 ipcMain.on("changeRoute", (event, url) => {
   // if the clicked route has a url (i.e. requires BrowserView)
-  if (url !== null) {
+  if (url !== undefined && url !== null) {
     let window = mainWindow.getBounds();
     setupBrowserView(url, window.width, window.height);
   } else {

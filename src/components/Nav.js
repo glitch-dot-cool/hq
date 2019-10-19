@@ -22,6 +22,12 @@ const Nav = ({ auth: { isAuthenticated, loading }, logout }) => {
         dashboard
       </SideBarNavLink>
       <SideBarNavLink
+        to={routes.files.path}
+        onClick={() => sendToMainProcess(routes.files.url)}
+      >
+        files
+      </SideBarNavLink>
+      <SideBarNavLink
         to={routes.trello.path}
         onClick={() => sendToMainProcess(routes.trello.url)}
       >

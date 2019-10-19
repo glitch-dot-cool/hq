@@ -7,6 +7,19 @@ const PageHeader = styled.h1`
   font-size: 4rem;
 `;
 
-export {
-    PageHeader
-};
+const Button = styled.button`
+  background-color: ${colors.midgrey};
+  color: ${colors.offwhite};
+  font-size: 2rem;
+  padding: 0.5rem;
+  border: none;
+  transition: 0.2s ease-out all;
+
+  &:hover {
+    color: ${colors.nearblack};
+    background-color: ${colors.lightgrey};
+    cursor: pointer;
+  }
+`;
+
+export { PageHeader, Button };

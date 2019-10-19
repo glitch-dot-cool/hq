@@ -1,5 +1,5 @@
 // store routes and corresponding urls for BrowserViews. if a route doesn't require
-// a BrowserView (i.e. is not embedded content from another website), simply leave the 
+// a BrowserView (i.e. is not embedded content from another website), simply leave the
 // url property as undefined.
 
 export default {
@@ -17,6 +17,10 @@ export default {
   },
   dashboard: {
     path: "/dashboard",
+    url: undefined
+  },
+  files: {
+    path: "/files",
     url: undefined
   }
 };

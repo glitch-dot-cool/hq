@@ -21,7 +21,7 @@ const Files = ({ listFiles, files: { files, loading } }) => {
       ) : (
         <FileList>
           {files.map(file => {
-            return <FileItem>{file.fileName}</FileItem>;
+            return <FileItem key={file.fileId}>{file.fileName}</FileItem>;
           })}
         </FileList>
       )}

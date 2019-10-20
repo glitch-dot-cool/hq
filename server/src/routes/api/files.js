@@ -29,7 +29,7 @@ router.get("/", auth, async (req, res) => {
 router.get("/auth", auth, async (req, res) => {
   try {
     const authObject = await b2.createKey(req.user.id);
-    const key = `${req.user.id}${req.user.id}`.substring(0, 32);
+    const key = req.headers["x-auth-token"].substring(0, 32);
     const encrypted = encryption.encrypt(key, authObject);
 
     res.json({ encrypted });

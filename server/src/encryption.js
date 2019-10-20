@@ -16,7 +16,7 @@ const decrypt = (key, data) => {
   let iv = Buffer.from(data.iv, "hex");
   let encryptedData = Buffer.from(data.encryptedData, "hex");
   let decipher = crypto.createDecipheriv("aes-256-gcm", Buffer.from(key), iv);
-  decipher.setAuthTag(data.authTag);
+  decipher.setAuthTag(Buffer.from(data.authTag));
   let decrypted = decipher.update(encryptedData);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   decrypted = JSON.parse(decrypted.toString());

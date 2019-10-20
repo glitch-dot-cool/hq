@@ -5,6 +5,7 @@ const isDev = require("electron-is-dev");
 const setupDevtools = require("./devtools").setupDevtools;
 const installExtension = require("electron-devtools-installer");
 const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension;
+const encryption = require("../server/src/encryption");
 
 let mainWindow, view;
 
@@ -106,3 +107,8 @@ const setIconByOS = () => {
     return path.join(__dirname, "../", "src/assets/icons/icon.ico");
   }
 };
+
+ipcMain.on("receivedB2Auth", (event, args) => {
+  const decrypted = encryption.decrypt(args.key, args.payload);
+  mainWindow.webContents.send("decryptedB2Auth", decrypted);
+});

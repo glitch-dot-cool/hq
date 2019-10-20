@@ -268,6 +268,29 @@ async function getFileId(fileName) {
   }
 }
 
+async function createKey(keyName) {
+  try {
+    const auth = await getAuth();
+
+    const res = await axios.post(
+      `${auth.apiUrl}/b2api/v2/b2_create_key`,
+      {
+        accountId: auth.accountId,
+        capabilities: ["listBuckets", "listFiles", "readFiles", "deleteFiles"],
+        keyName,
+        validDurationInSeconds: 43200
+      },
+      {
+        headers: { Authorization: auth.token }
+      }
+    );
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   getAuth,
   createBucket,
@@ -278,5 +301,6 @@ module.exports = {
   downloadFileById,
   listFiles,
   deleteFile,
-  getFileId
+  getFileId,
+  createKey
 };

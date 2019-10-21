@@ -6,14 +6,14 @@ const { Readable, Writable } = require("stream");
 
 const { B2_KEY_ID, B2_APPLICATION_KEY } = require("../../config");
 
-const authString = `${B2_KEY_ID}:${B2_APPLICATION_KEY}`;
-const authStringBase64 = new Buffer.alloc(
-  authString.length,
-  authString
-).toString("base64");
-
 async function getAuth() {
   try {
+    const authString = `${B2_KEY_ID}:${B2_APPLICATION_KEY}`;
+    const authStringBase64 = new Buffer.alloc(
+      authString.length,
+      authString
+    ).toString("base64");
+
     const res = await axios.post(
       "https://api.backblazeb2.com/b2api/v2/b2_authorize_account",
       {},
@@ -30,6 +30,37 @@ async function getAuth() {
       downloadUrl: res.data.downloadUrl,
       recommendedPartSize: res.data.recommendedPartSize
     };
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getClientAuth(b2Key) {
+  try {
+    if (b2Key !== undefined) {
+      const authString = `${b2Key.applicationKeyId}:${b2Key.applicationKey}`;
+      const authStringBase64 = new Buffer.alloc(
+        authString.length,
+        authString
+      ).toString("base64");
+
+      const res = await axios.post(
+        "https://api.backblazeb2.com/b2api/v2/b2_authorize_account",
+        {},
+        {
+          headers: { Authorization: `Basic ${authStringBase64}` }
+        }
+      );
+
+      return {
+        accountId: B2_KEY_ID,
+        applicationKey: B2_APPLICATION_KEY,
+        apiUrl: res.data.apiUrl,
+        token: res.data.authorizationToken,
+        downloadUrl: res.data.downloadUrl,
+        recommendedPartSize: res.data.recommendedPartSize
+      };
+    }
   } catch (err) {
     console.error(err);
   }
@@ -293,6 +324,7 @@ async function createKey(keyName) {
 
 module.exports = {
   getAuth,
+  getClientAuth,
   createBucket,
   getBucketId,
   getUploadUrl,

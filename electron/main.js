@@ -6,6 +6,7 @@ const setupDevtools = require("./devtools").setupDevtools;
 const installExtension = require("electron-devtools-installer");
 const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension;
 const encryption = require("../server/src/encryption");
+const b2 = require("./b2");
 
 let mainWindow, view;
 
@@ -111,4 +112,9 @@ const setIconByOS = () => {
 ipcMain.on("receivedB2Auth", (event, args) => {
   const decrypted = encryption.decrypt(args.key, args.payload);
   mainWindow.webContents.send("decryptedB2Auth", decrypted);
+});
+
+ipcMain.on("listFiles", async (event, auth) => {
+  const fileList = await b2.listFiles(auth);
+  mainWindow.webContents.send("fileListRetrieved", fileList);
 });

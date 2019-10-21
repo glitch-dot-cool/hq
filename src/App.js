@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/auth";
+import { getB2Auth } from "./actions/files";
 import setAuthToken from "./utils/setAuthToken";
 
 // eslint-disable-next-line
@@ -28,6 +29,7 @@ if (localStorage.token) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(getB2Auth());
   }, []);
 
   return (

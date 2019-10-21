@@ -39,13 +39,15 @@ export const getB2Auth = () => async dispatch => {
 };
 
 // get list of all files in B2 bucket
-export const listFiles = () => async dispatch => {
+export const listFiles = auth => async dispatch => {
   try {
-    const res = await axios.get("/api/files");
+    ipc.send("listFiles", auth);
 
-    dispatch({
-      type: FILES_LOADED,
-      payload: res.data
+    ipc.on("fileListRetrieved", (event, files) => {
+      dispatch({
+        type: FILES_LOADED,
+        payload: files
+      });
     });
   } catch (err) {
     dispatch({

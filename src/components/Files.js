@@ -3,16 +3,14 @@ import styled from "styled-components";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { listFiles, getB2Auth } from "../actions/files";
+import { listFiles } from "../actions/files";
 
 import colors from "../styles/colors";
 
-const Files = ({ listFiles, getB2Auth, files: { files, loading } }) => {
-  console.log(files);
+const Files = ({ b2Auth, listFiles, files: { files, loading } }) => {
   useEffect(() => {
-    listFiles();
-    getB2Auth();
-  }, [getB2Auth, listFiles]);
+    listFiles(b2Auth);
+  }, [listFiles, b2Auth]);
 
   return (
     <Fragment>
@@ -31,17 +29,18 @@ const Files = ({ listFiles, getB2Auth, files: { files, loading } }) => {
 
 Files.propTypes = {
   listFiles: PropTypes.func.isRequired,
-  getB2Auth: PropTypes.func.isRequired,
-  files: PropTypes.array.isRequired
+  files: PropTypes.array.isRequired,
+  b2Auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  files: state.files
+  files: state.files,
+  b2Auth: state.files.b2Auth
 });
 
 export default connect(
   mapStateToProps,
-  { listFiles, getB2Auth }
+  { listFiles }
 )(Files);
 
 const FileList = styled.ol`

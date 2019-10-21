@@ -4,10 +4,8 @@ const path = require("path");
 const fs = require("fs");
 const { Readable, Writable } = require("stream");
 
-async function getBucketId() {
+async function getBucketId(auth) {
   try {
-    const auth = await getAuth();
-
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_list_buckets?accountId=${auth.accountId}`,
       {
@@ -138,10 +136,9 @@ async function downloadFileById(fileName) {
   }
 }
 
-async function listFiles() {
+async function listFiles(auth) {
   try {
-    const auth = await getAuth();
-    const bucket = await getBucketId();
+    const bucket = await getBucketId(auth);
 
     let startFileName = null;
     let allFiles = [];

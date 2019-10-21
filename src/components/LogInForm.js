@@ -2,14 +2,14 @@ import React, { Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { setAlert } from "../actions/alert";
 import PropTypes from "prop-types";
 import { login } from "../actions/auth";
 import routes from "../routes";
+import { getB2Auth } from "../actions/files";
 
 import colors from "../styles/colors";
 
-const LogInForm = ({ setAlert, login, isAuthenticated }) => {
+const LogInForm = ({ getB2Auth, login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -24,6 +24,7 @@ const LogInForm = ({ setAlert, login, isAuthenticated }) => {
   const onSubmit = async e => {
     e.preventDefault();
     login(email, password);
+    getB2Auth();
   };
 
   // redirect if logged in
@@ -84,16 +85,17 @@ const SubmitButton = styled.input`
 `;
 
 LogInForm.propTypes = {
-  setAlert: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  b2Auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  b2Auth: state.files.b2Auth
 });
 
 export default connect(
   mapStateToProps,
-  { setAlert, login }
+  { login, getB2Auth }
 )(LogInForm);

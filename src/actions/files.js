@@ -1,7 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import { FILES_LOADED, FILE_ERROR } from "./types";
+import {
+  FILES_LOADED,
+  FILE_ERROR,
+  B2_AUTH_LOADED,
+  B2_AUTH_ERROR
+} from "./types";
 
 const electron = window.require("electron");
 const ipc = electron.ipcRenderer;
@@ -11,6 +16,7 @@ export const getB2Auth = () => async dispatch => {
   try {
     const res = await axios.get("/api/files/auth");
     const key = localStorage.token.substring(0, 32);
+    let authObject;
 
     ipc.send("receivedB2Auth", {
       key,
@@ -18,10 +24,19 @@ export const getB2Auth = () => async dispatch => {
     });
 
     ipc.on("decryptedB2Auth", (event, args) => {
-      console.log(args);
+      authObject = args;
     });
+
+    dispatch({
+      type: B2_AUTH_LOADED,
+      payload: authObject
+    });
+
+    dispatch(setAlert("Successfully obtained B2 authentication", "success"));
   } catch (err) {
     console.error(err);
+    dispatch({ type: B2_AUTH_ERROR });
+    dispatch(setAlert("Error retrieving B2 authentication", "danger"));
   }
 };
 

@@ -16,20 +16,18 @@ export const getB2Auth = () => async dispatch => {
   try {
     const res = await axios.get("/api/files/auth");
     const key = localStorage.token.substring(0, 32);
-    let authObject;
 
     ipc.send("receivedB2Auth", {
       key,
       payload: res.data.encrypted
     });
 
-    ipc.on("decryptedB2Auth", (event, args) => {
-      authObject = args;
-    });
-
-    dispatch({
-      type: B2_AUTH_LOADED,
-      payload: authObject
+    ipc.on("decryptedB2Auth", async (event, args) => {
+      let authObject = await args;
+      await dispatch({
+        type: B2_AUTH_LOADED,
+        payload: authObject
+      });
     });
 
     dispatch(setAlert("Successfully obtained B2 authentication", "success"));

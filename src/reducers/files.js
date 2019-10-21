@@ -8,6 +8,7 @@ import {
 const initialState = {
   loading: true,
   files: [],
+  b2Auth: null,
   b2IsAuthenticated: false
 };
 
@@ -19,13 +20,15 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        b2IsAuthenticated: true
+        b2IsAuthenticated: true,
+        b2Auth: payload
       };
     case B2_AUTH_ERROR:
       return {
         ...state,
         loading: false,
-        b2IsAuthenticated: false
+        b2IsAuthenticated: false,
+        b2Auth: null
       };
     case FILES_LOADED:
       return {

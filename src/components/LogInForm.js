@@ -55,7 +55,9 @@ const LogInForm = ({ getB2Auth, login, isAuthenticated }) => {
   );
 };
 
-const Form = styled.form``;
+const Form = styled.form`
+  width: 34%;
+`;
 
 const FormLabel = styled.label`
   display: block;
@@ -67,6 +69,7 @@ const FormField = styled.input`
   font-size: 2rem;
   padding: 0.5rem;
   margin-bottom: 2rem;
+  width: 100%;
 `;
 
 const SubmitButton = styled.input`

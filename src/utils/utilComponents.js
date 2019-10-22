@@ -22,4 +22,11 @@ const Button = styled.button`
   }
 `;
 
-export { PageHeader, Button };
+const Centered = styled.div`
+  display: flex;
+  flex-direction: ${props => (props.column ? `column` : `row`)};
+  justify-content: center;
+  align-items: center;
+`;
+
+export { PageHeader, Button, Centered };

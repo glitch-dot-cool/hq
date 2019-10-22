@@ -2,16 +2,17 @@ import React from "react";
 
 import Head from "./Head";
 import LogInForm from "./LogInForm";
-import { PageHeader } from "../utils/utilComponents";
+import { PageHeader, Centered } from "../utils/utilComponents";
+import measurements from "../styles/measurements";
 
-const Home = () => {
+const Login = () => {
   return (
-    <div>
+    <Centered column style={{ height: `50vh` }}>
       <Head title="login"></Head>
       <PageHeader>login</PageHeader>
       <LogInForm></LogInForm>
-    </div>
+    </Centered>
   );
 };
 
-export default Home;
+export default Login;

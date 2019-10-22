@@ -28,9 +28,6 @@ class Sidebar extends Component {
     },
     logoStyles: {
       transform: `translateX(0) scale(1)`
-    },
-    spacerStyles: {
-      transform: `translateX(0)`
     }
   };
 
@@ -51,9 +48,6 @@ class Sidebar extends Component {
         },
         logoStyles: {
           transform: `translateX(195px) scale(.7)`
-        },
-        spacerStyles: {
-          width: `50px`
         }
       });
       updateBrowserView(50);
@@ -69,9 +63,6 @@ class Sidebar extends Component {
         },
         logoStyles: {
           transform: `translateX(0) scale(1)`
-        },
-        spacerStyles: {
-          width: `${measurements.navWidth}px`
         }
       });
       updateBrowserView(measurements.navWidth);
@@ -88,7 +79,6 @@ class Sidebar extends Component {
           </HeaderWrapper>
           <Nav></Nav>
         </SidebarBackground>
-        <Spacer style={this.state.spacerStyles}></Spacer>
       </Fragment>
     );
   }
@@ -142,12 +132,4 @@ const HeaderTitle = styled.h1`
   color: ${colors.offwhite};
   transition: 0.5s ease-out transform;
   z-index: 0;
-`;
-
-const Spacer = styled.div`
-  display: inline-block;
-  width: ${measurements.navWidth}px;
-  height: 100vh;
-  pointer-events: none;
-  transition: 0.5s ease-out all;
 `;

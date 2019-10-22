@@ -35,6 +35,29 @@ async function getAuth() {
   }
 }
 
+async function createKey(keyName) {
+  try {
+    const auth = await getAuth();
+
+    const res = await axios.post(
+      `${auth.apiUrl}/b2api/v2/b2_create_key`,
+      {
+        accountId: auth.accountId,
+        capabilities: ["listBuckets", "listFiles", "readFiles", "deleteFiles"],
+        keyName,
+        validDurationInSeconds: 43200
+      },
+      {
+        headers: { Authorization: auth.token }
+      }
+    );
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function getClientAuth(b2Key) {
   try {
     if (b2Key !== undefined) {
@@ -53,12 +76,13 @@ async function getClientAuth(b2Key) {
       );
 
       return {
-        accountId: B2_KEY_ID,
-        applicationKey: B2_APPLICATION_KEY,
+        accountId: b2Key.applicationKeyId,
+        applicationKey: b2Key.applicationKey,
         apiUrl: res.data.apiUrl,
         token: res.data.authorizationToken,
         downloadUrl: res.data.downloadUrl,
-        recommendedPartSize: res.data.recommendedPartSize
+        recommendedPartSize: res.data.recommendedPartSize,
+        absoluteMinimumPartSize: res.data.absoluteMinimumPartSize
       };
     }
   } catch (err) {
@@ -66,10 +90,8 @@ async function getClientAuth(b2Key) {
   }
 }
 
-async function createBucket(bucketName) {
+async function createBucket(auth, bucketName) {
   try {
-    const auth = await getAuth();
-
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_create_bucket?accountId=${auth.accountId}&bucketName=${bucketName}&bucketType=allPrivate`,
       {
@@ -83,10 +105,8 @@ async function createBucket(bucketName) {
   }
 }
 
-async function getBucketId() {
+async function getBucketId(auth) {
   try {
-    const auth = await getAuth();
-
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_list_buckets?accountId=${auth.accountId}`,
       {
@@ -107,10 +127,9 @@ async function getBucketId() {
   }
 }
 
-async function getUploadUrl() {
+async function getUploadUrl(auth) {
   try {
-    const auth = await getAuth();
-    const bucket = await getBucketId();
+    const bucket = await getBucketId(auth);
 
     const res = await axios.post(
       `${auth.apiUrl}/b2api/v2/b2_get_upload_url`,
@@ -131,7 +150,7 @@ async function getUploadUrl() {
   }
 }
 
-async function uploadFile() {
+async function uploadFile(auth) {
   const fileData =
     "Each thing (a mirror's face, let us say) was infinite things";
   const fileName = "aleph.txt";
@@ -142,7 +161,7 @@ async function uploadFile() {
     .digest("hex");
 
   try {
-    const uploadUrl = await getUploadUrl();
+    const uploadUrl = await getUploadUrl(auth);
     const res = await axios.post(uploadUrl.url, fileData, {
       headers: {
         Authorization: uploadUrl.token,
@@ -160,10 +179,9 @@ async function uploadFile() {
   }
 }
 
-async function downloadFile(fileName) {
+async function downloadFile(auth, fileName) {
   try {
-    const auth = await getAuth();
-    const bucket = await getBucketId();
+    const bucket = await getBucketId(auth);
 
     const res = await axios.get(
       `${auth.downloadUrl}/file/${bucket.name}/${fileName}`,
@@ -191,10 +209,9 @@ async function downloadFile(fileName) {
   }
 }
 
-async function downloadFileById(fileName) {
+async function downloadFileById(auth, fileName) {
   try {
-    const auth = await getAuth();
-    const fileId = await getFileId(fileName);
+    const fileId = await getFileId(auth, fileName);
 
     const res = await axios.get(
       `${auth.apiUrl}/b2api/v2/b2_download_file_by_id?fileId=${fileId}`,
@@ -217,10 +234,9 @@ async function downloadFileById(fileName) {
   }
 }
 
-async function listFiles() {
+async function listFiles(auth) {
   try {
-    const auth = await getAuth();
-    const bucket = await getBucketId();
+    const bucket = await getBucketId(auth);
 
     let startFileName = null;
     let allFiles = [];
@@ -251,12 +267,10 @@ async function listFiles() {
   }
 }
 
-async function deleteFile(fileNameToDelete) {
+async function deleteFile(auth, fileNameToDelete) {
   try {
-    const auth = await getAuth();
-
     let fileName, fileId;
-    let allFiles = await listFiles();
+    let allFiles = await listFiles(auth);
 
     allFiles.forEach(file => {
       if (file.fileName === fileNameToDelete) {
@@ -282,9 +296,9 @@ async function deleteFile(fileNameToDelete) {
   }
 }
 
-async function getFileId(fileName) {
+async function getFileId(auth, fileName) {
   try {
-    const files = await listFiles();
+    const files = await listFiles(auth);
     let fileId;
 
     files.forEach(file => {
@@ -299,28 +313,7 @@ async function getFileId(fileName) {
   }
 }
 
-async function createKey(keyName) {
-  try {
-    const auth = await getAuth();
 
-    const res = await axios.post(
-      `${auth.apiUrl}/b2api/v2/b2_create_key`,
-      {
-        accountId: auth.accountId,
-        capabilities: ["listBuckets", "listFiles", "readFiles", "deleteFiles"],
-        keyName,
-        validDurationInSeconds: 43200
-      },
-      {
-        headers: { Authorization: auth.token }
-      }
-    );
-
-    return res.data;
-  } catch (err) {
-    console.error(err);
-  }
-}
 
 module.exports = {
   getAuth,

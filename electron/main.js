@@ -6,7 +6,7 @@ const setupDevtools = require("./devtools").setupDevtools;
 const installExtension = require("electron-devtools-installer");
 const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension;
 const encryption = require("../server/src/encryption");
-const b2 = require("./b2");
+const b2 = require("./b2Client");
 
 let mainWindow, view;
 

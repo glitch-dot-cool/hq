@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
 
-const b2 = require("../../b2Master");
+const b2 = require("../../b2Server");
 const encryption = require("../../encryption");
 const auth = require("../../middleware/auth");
 

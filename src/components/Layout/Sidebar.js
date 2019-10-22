@@ -2,11 +2,11 @@ import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { sidebarOpen, sidebarClose } from "../actions/sidebar";
+import { sidebarOpen, sidebarClose } from "../../actions/sidebar";
 
-import colors from "../styles/colors";
-import measurements from "../styles/measurements";
-import logo from "../assets/icons/256x256.png";
+import colors from "../../styles/colors";
+import measurements from "../../styles/measurements";
+import logo from "../../assets/icons/256x256.png";
 
 import Nav from "./Nav";
 

@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { logout } from "../actions/auth";
+import { logout } from "../../actions/auth";
 
-import colors from "../styles/colors";
-import measurements from "../styles/measurements";
-import routes from "../routes";
+import colors from "../../styles/colors";
+import measurements from "../../styles/measurements";
+import routes from "../../routes";
 
 const electron = window.require("electron");
 const ipc = electron.ipcRenderer;

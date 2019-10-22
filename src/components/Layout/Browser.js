@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Head from "./Head";
+import Head from "../Head";
 
 const BrowserContainer = styled.div``;
 

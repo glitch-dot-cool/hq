@@ -1,9 +1,8 @@
 import React from "react";
 
-import Head from "./Head";
+import Head from "../Head";
 import LogInForm from "./LogInForm";
-import { PageHeader, Centered } from "../utils/utilComponents";
-import measurements from "../styles/measurements";
+import { PageHeader, Centered } from "../../utils/utilComponents";
 
 const Login = () => {
   return (

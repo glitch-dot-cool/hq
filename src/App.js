@@ -12,9 +12,9 @@ import setAuthToken from "./utils/setAuthToken";
 import styles from "./styles/global.css";
 import routes from "./routes";
 
-import Layout from "./components/Layout";
-import Browser from "./components/Browser";
-import Login from "./components/Login";
+import Layout from "./components/Layout/Layout";
+import Browser from "./components/Layout/Browser";
+import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard";
 import Error from "./components/Error";
 import Alert from "./components/Alert";

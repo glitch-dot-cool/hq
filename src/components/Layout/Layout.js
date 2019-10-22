@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import colors from "../styles/colors";
-import measurements from "../styles/measurements";
+import colors from "../../styles/colors";
+import measurements from "../../styles/measurements";
 import Sidebar from "./Sidebar";
 
 const Layout = ({ sidebarIsOpen, ...props }) => {

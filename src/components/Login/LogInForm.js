@@ -3,11 +3,11 @@ import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { login } from "../actions/auth";
-import routes from "../routes";
-import { getB2Auth } from "../actions/files";
+import { login } from "../../actions/auth";
+import routes from "../../routes";
+import { getB2Auth } from "../../actions/files";
 
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 
 const LogInForm = ({ getB2Auth, login, isAuthenticated }) => {
   const [formData, setFormData] = useState({

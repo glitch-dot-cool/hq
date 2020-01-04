@@ -23,7 +23,7 @@ const LogInForm = ({ getB2Auth, login, isAuthenticated }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    login(email, password);
+    await login(email, password);
     getB2Auth();
   };
 

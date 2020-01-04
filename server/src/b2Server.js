@@ -76,7 +76,7 @@ async function getClientAuth(b2Key) {
       );
 
       return {
-        accountId: b2Key.applicationKeyId,
+        accountId: B2_KEY_ID,
         applicationKey: b2Key.applicationKey,
         apiUrl: res.data.apiUrl,
         token: res.data.authorizationToken,
@@ -312,8 +312,6 @@ async function getFileId(auth, fileName) {
     console.error(err);
   }
 }
-
-
 
 module.exports = {
   getAuth,
